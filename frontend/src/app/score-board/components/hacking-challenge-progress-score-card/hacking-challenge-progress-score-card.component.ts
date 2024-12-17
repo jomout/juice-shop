@@ -16,7 +16,7 @@ export class HackingChallengeProgressScoreCardComponent implements OnInit, OnCha
     this.updatedNumberOfSolvedChallenges()
   }
 
-  ngOnChanges (changes: SimpleChanges): void {
+  ngOnChanges (_: SimpleChanges): void {
     this.updatedNumberOfSolvedChallenges()
   }
 
