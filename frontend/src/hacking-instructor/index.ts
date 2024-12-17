@@ -111,7 +111,7 @@ function loadHint (hint: ChallengeHint): HTMLElement {
   textBox.style.flexGrow = '2'
   // textBox.innerHTML = snarkdown(hint.text)
   const sanitizedHTML = DOMPurify.sanitize(snarkdown(hint.text));
-  textBox.innerHTML = sanitizedHTML;
+  textBox.textContent = sanitizedHTML;
 
   const cancelButton = document.createElement('button')
   cancelButton.id = 'cancelButton'

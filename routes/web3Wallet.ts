@@ -3,12 +3,12 @@ import challengeUtils = require('../lib/challengeUtils')
 import * as utils from '../lib/utils'
 import { challenges } from '../data/datacache'
 const web3WalletABI = require('../data/static/contractABIs').web3WalletABI
-const ethers = require('ethers')
+import ethers from 'ethers'
 const web3WalletAddress = '0x413744D59d31AFDC2889aeE602636177805Bd7b0'
 const walletsConnected = new Set()
 let isEventListenerCreated = false
 
-module.exports.contractExploitListener = function contractExploitListener () {
+export function contractExploitListener () {
   return (req: Request, res: Response) => {
     const metamaskAddress = req.body.walletAddress
     walletsConnected.add(metamaskAddress)

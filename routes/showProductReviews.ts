@@ -25,7 +25,7 @@ global.sleep = (time: number) => {
   }
 }
 
-module.exports = function productReviews () {
+export function productReviews () {
   return (req: Request, res: Response, next: NextFunction) => {
     const id = !utils.isChallengeEnabled(challenges.noSqlCommandChallenge) ? Number(req.params.id) : req.params.id
 

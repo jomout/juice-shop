@@ -40,7 +40,7 @@ describe('/rest/user/data-export', () => {
           })
       })
   })
-
+  
   it('Export data when CAPTCHA requested need right answer', () => {
     return frisby.post(REST_URL + '/user/login', {
       headers: jsonHeader,

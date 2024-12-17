@@ -8,7 +8,7 @@ import { ExifImage } from 'exif'
 import sinonChai = require('sinon-chai')
 const expect = chai.expect
 chai.use(sinonChai)
-const fs = require('fs')
+import * as fs from 'fs';
 const utils = require('../../lib/utils')
 const { pipeline } = require('stream')
 const fetch = require('node-fetch')

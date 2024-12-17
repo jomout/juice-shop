@@ -11,7 +11,7 @@ import { challenges } from '../data/datacache'
 
 const security = require('../lib/insecurity')
 
-module.exports = function productReviews () {
+export function productReviews () {
   return (req: Request, res: Response, next: NextFunction) => {
     const id = req.body.id
     const user = security.authenticatedUsers.from(req)

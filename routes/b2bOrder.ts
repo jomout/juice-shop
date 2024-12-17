@@ -12,7 +12,7 @@ import { challenges } from '../data/datacache'
 const security = require('../lib/insecurity')
 const safeEval = require('notevil')
 
-module.exports = function b2bOrder () {
+export function b2bOrder () {
   return ({ body }: Request, res: Response, next: NextFunction) => {
     if (utils.isChallengeEnabled(challenges.rceChallenge) || utils.isChallengeEnabled(challenges.rceOccupyChallenge)) {
       const orderLinesData = body.orderLinesData || ''

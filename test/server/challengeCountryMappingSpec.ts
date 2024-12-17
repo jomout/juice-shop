@@ -10,7 +10,7 @@ import sinonChai = require('sinon-chai')
 const expect = chai.expect
 chai.use(sinonChai)
 
-const fs = require('fs')
+import * as fs from 'fs';
 const { safeLoad } = require('js-yaml')
 const readFile = promisify(fs.readFile)
 

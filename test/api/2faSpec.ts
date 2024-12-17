@@ -1,10 +1,14 @@
-import frisby = require('frisby')
-import config from 'config'
-import jwt from 'jsonwebtoken'
-const Joi = frisby.Joi
-const security = require('../../lib/insecurity')
+/*
+ * Copyright (c) 2014-2024 Bjoern Kimminich & the OWASP Juice Shop contributors.
+ * SPDX-License-Identifier: MIT
+ */
 
-const otplib = require('otplib')
+import frisby = require('frisby');
+import config from 'config';
+import jwt from 'jsonwebtoken';
+const Joi = frisby.Joi;
+const security = require('../../lib/insecurity');
+import otplib from 'otplib';
 
 const REST_URL = 'http://localhost:3000/rest'
 const API_URL = 'http://localhost:3000/api'
