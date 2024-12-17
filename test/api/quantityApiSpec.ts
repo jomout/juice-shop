@@ -199,33 +199,47 @@ describe('/api/Quantitys/:ids', () => {
       })
   })
 
-  function testPutQuantityForbidden(userRole: string) {
-    it(`PUT quantity is forbidden for ${userRole}`, () => {
-      return frisby.post(`${REST_URL}/user/login`, {
-        headers: jsonHeader,
-        body: {
-          email: `jim@${config.get<string>('application.domain')}`,
-          password: 'ncc-1701'
-        }
+  it('PUT quantity is forbidden for customers', () => {
+    return frisby.post(`${REST_URL}/user/login`, {
+      headers: jsonHeader,
+      body: {
+        email: `jim@${config.get<string>('application.domain')}`,
+        password: 'ncc-1701'
+      }
+    })
+      .expect('status', 200)
+      .then(({ json }) => {
+        return frisby.put(`${API_URL}/Quantitys/1`, {
+          headers: { Authorization: `Bearer ${json.authentication.token}`, 'content-type': 'application/json' },
+          body: {
+            quantity: 100
+          }
+        })
+          .expect('status', 403)
+          .expect('json', 'error', 'Malicious activity detected')
       })
-        .expect('status', 200)
-        .then(({ json }) => {
-          return frisby.put(`${API_URL}/Quantitys/1`, {
-            headers: {
-              Authorization: `Bearer ${json.authentication.token}`,
-              'content-type': 'application/json'
-            },
-            body: { quantity: 100 }
-          })
-            .expect('status', 403)
-            .expect('json', 'error', 'Malicious activity detected');
-        });
-    });
-  }
-  
-  // Call the function for each role
-  testPutQuantityForbidden('customers');
-  testPutQuantityForbidden('admin');
+  })
+
+  it('PUT quantity is forbidden for admin', () => {
+    return frisby.post(`${REST_URL}/user/login`, {
+      headers: jsonHeader,
+      body: {
+        email: `jim@${config.get<string>('application.domain')}`,
+        password: 'ncc-1701'
+      }
+    })
+      .expect('status', 200)
+      .then(({ json }) => {
+        return frisby.put(`${API_URL}/Quantitys/1`, {
+          headers: { Authorization: `Bearer ${json.authentication.token}`, 'content-type': 'application/json' },
+          body: {
+            quantity: 100
+          }
+        })
+          .expect('status', 403)
+          .expect('json', 'error', 'Malicious activity detected')
+      })
+  })
 
   it('PUT quantity as accounting user blocked by IP filter', () => {
     return frisby.post(`${REST_URL}/user/login`, {
