@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import fs = require('fs')
+import * as fs from 'fs';
 import { type Request, type Response } from 'express'
 import challengeUtils = require('../lib/challengeUtils')
 import config from 'config'
