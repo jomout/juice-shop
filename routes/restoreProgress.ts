@@ -9,7 +9,7 @@ import { challenges } from '../data/datacache'
 
 const challengeUtils = require('../lib/challengeUtils')
 
-module.exports.restoreProgress = function restoreProgress () {
+export function restoreProgress () {
   return ({ params }: Request, res: Response) => {
     const hashids = new Hashids('this is my salt', 60, 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890')
     const continueCode = params.continueCode
@@ -32,7 +32,7 @@ module.exports.restoreProgress = function restoreProgress () {
   }
 }
 
-module.exports.restoreProgressFindIt = function restoreProgressFindIt () {
+export function restoreProgressFindIt () {
   return async ({ params }: Request, res: Response) => {
     const hashids = new Hashids('this is the salt for findIt challenges', 60, 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890')
     const continueCodeFindIt = params.continueCode
@@ -52,7 +52,7 @@ module.exports.restoreProgressFindIt = function restoreProgressFindIt () {
   }
 }
 
-module.exports.restoreProgressFixIt = function restoreProgressFixIt () {
+export function restoreProgressFixIt () {
   const hashids = new Hashids('yet another salt for the fixIt challenges', 60, 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890')
   return async ({ params }: Request, res: Response) => {
     const continueCodeFixIt = params.continueCode

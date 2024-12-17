@@ -10,8 +10,10 @@ import sinonChai = require('sinon-chai')
 const expect = chai.expect
 chai.use(sinonChai)
 
+import { countryMapping } from '../../routes/countryMapping'
+
 describe('countryMapping', () => {
-  const countryMapping = require('../../routes/countryMapping')
+
   let req: any
   let res: any
 

@@ -10,7 +10,7 @@ const security = require('../lib/insecurity')
 const cache = require('../data/datacache')
 const challenges = cache.challenges
 
-module.exports = function retrieveLoggedInUser () {
+export function retrieveLoggedInUser () {
   return (req: Request, res: Response) => {
     let user
     try {

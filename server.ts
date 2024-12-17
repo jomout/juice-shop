@@ -58,36 +58,30 @@ import swaggerUi from 'swagger-ui-express'
 const RateLimit = require('express-rate-limit')
 const ipfilter = require('express-ipfilter').IpFilter
 const swaggerDocument = yaml.load(fs.readFileSync('./swagger.yml', 'utf8'))
-const {
-  ensureFileIsPassed,
-  handleZipFileUpload,
-  checkUploadSize,
-  checkFileType,
-  handleXmlUpload
-} = require('./routes/fileUpload')
-const profileImageFileUpload = require('./routes/profileImageFileUpload')
-const profileImageUrlUpload = require('./routes/profileImageUrlUpload')
-const redirect = require('./routes/redirect')
-const vulnCodeSnippet = require('./routes/vulnCodeSnippet')
-const vulnCodeFixes = require('./routes/vulnCodeFixes')
-const angular = require('./routes/angular')
-const easterEgg = require('./routes/easterEgg')
-const premiumReward = require('./routes/premiumReward')
-const privacyPolicyProof = require('./routes/privacyPolicyProof')
-const appVersion = require('./routes/appVersion')
-const repeatNotification = require('./routes/repeatNotification')
-const continueCode = require('./routes/continueCode')
-const restoreProgress = require('./routes/restoreProgress')
-const fileServer = require('./routes/fileServer')
-const quarantineServer = require('./routes/quarantineServer')
-const keyServer = require('./routes/keyServer')
-const logFileServer = require('./routes/logfileServer')
-const metrics = require('./routes/metrics')
-const currentUser = require('./routes/currentUser')
-const login = require('./routes/login')
-const changePassword = require('./routes/changePassword')
-const resetPassword = require('./routes/resetPassword')
-const securityQuestion = require('./routes/securityQuestion')
+import { ensureFileIsPassed, handleZipFileUpload, checkUploadSize, checkFileType, handleXmlUpload } from './routes/fileUpload'
+import { fileUpload as profileImageFileUpload } from './routes/profileImageFileUpload'
+import { profileImageUrlUpload } from './routes/profileImageUrlUpload'
+import redirect = require('./routes/redirect')
+import * as vulnCodeSnippet from './routes/vulnCodeSnippet'
+import * as vulnCodeFixes from './routes/vulnCodeFixes'
+import { serveAngularClient as angular } from './routes/angular'
+import { serveEasterEgg as easterEgg } from './routes/easterEgg'
+import { servePremiumContent as premiumReward } from './routes/premiumReward'
+import { servePrivacyPolicyProof } from './routes/privacyPolicyProof'
+import { retrieveAppVersion as appVersion } from './routes/appVersion'
+import { repeatNotification } from './routes/repeatNotification'
+import * as continueCode from './routes/continueCode'
+import * as restoreProgress from './routes/restoreProgress'
+import { servePublicFiles as fileServer } from './routes/fileServer'
+import { serveQuarantineFiles as quarantineServer } from './routes/quarantineServer'
+import { serveKeyFiles as keyServer } from './routes/keyServer'
+import { serveLogFiles as logFileServer } from './routes/logfileServer'
+import * as metrics from './routes/metrics'
+import { retrieveLoggedInUser as currentUser } from './routes/currentUser'
+import { login } from './routes/login'
+import { changePassword } from './routes/changePassword'
+import { resetPassword } from './routes/resetPassword'
+import { securityQuestion } from './routes/securityQuestion'
 import { searchProducts as search } from './routes/search'
 import { applyCoupon as coupon } from './routes/coupon'
 import { retrieveBasket } from './routes/basket'
@@ -98,7 +92,7 @@ const b2bOrder = require('./routes/b2bOrder')
 const showProductReviews = require('./routes/showProductReviews')
 const createProductReviews = require('./routes/createProductReviews')
 const checkKeys = require('./routes/checkKeys')
-const nftMint = require('./routes/nftMint')
+import * as nftMint from './routes/nftMint'
 const web3Wallet = require('./routes/web3Wallet')
 const updateProductReviews = require('./routes/updateProductReviews')
 const likeProductReviews = require('./routes/likeProductReviews')
@@ -106,15 +100,15 @@ const security = require('./lib/insecurity')
 const app = express()
 const server = require('http').Server(app)
 import { retrieveAppConfiguration } from './routes/appConfiguration'
-const captcha = require('./routes/captcha')
-const trackOrder = require('./routes/trackOrder')
-const countryMapping = require('./routes/countryMapping')
-const basketItems = require('./routes/basketItems')
-const saveLoginIp = require('./routes/saveLoginIp')
-const userProfile = require('./routes/userProfile')
-const updateUserProfile = require('./routes/updateUserProfile')
-const videoHandler = require('./routes/videoHandler')
-const twoFactorAuth = require('./routes/2fa')
+import { captchas as captcha } from './routes/captcha'
+import { trackOrder } from './routes/trackOrder'
+import { countryMapping } from './routes/countryMapping'
+import * as basketItems from './routes/basketItems'
+import { saveLoginIp } from './routes/saveLoginIp'
+import { getUserProfile as userProfile } from './routes/userProfile'
+import { updateUserProfile } from './routes/updateUserProfile'
+import * as videoHandler from './routes/videoHandler'
+import * as twoFactorAuth from './routes/2fa'
 import { getLanguageList } from './routes/languages'
 import { imageCaptchas } from './routes/imageCaptcha'
 import { dataExport } from './routes/dataExport'
@@ -126,9 +120,9 @@ import * as delivery from './routes/delivery'
 import { upgradeToDeluxe, deluxeMembershipStatus } from './routes/deluxe';
 import { addMemory, getMemories } from './routes/memory'
 import * as chatbot from './routes/chatbot'
-const locales = require('./data/static/locales.json')
-const i18n = require('i18n')
-const antiCheat = require('./lib/antiCheat')
+import locales from './data/static/locales.json'
+import i18n from 'i18n'
+import { checkForPreSolveInteractions } from './lib/antiCheat'
 
 const appName = config.get<string>('application.customMetricsPrefix')
 const startupGauge = new Prometheus.Gauge({
@@ -219,7 +213,7 @@ restoreOverwrittenFilesWithOriginals().then(() => {
   app.use(robots({ UserAgent: '*', Disallow: '/ftp' }))
 
   /* Check for any URLs having been called that would be expected for challenge solving without cheating */
-  app.use(antiCheat.checkForPreSolveInteractions())
+  app.use(checkForPreSolveInteractions())
 
   /* Checks for challenges solved by retrieving a file implicitly or explicitly */
   app.use('/assets/public/images/padding', verify.accessControlChallenges())
@@ -619,7 +613,7 @@ restoreOverwrittenFilesWithOriginals().then(() => {
   /* File Serving */
   app.get('/the/devs/are/so/funny/they/hid/an/easter/egg/within/the/easter/egg', easterEgg())
   app.get('/this/page/is/hidden/behind/an/incredibly/high/paywall/that/could/only/be/unlocked/by/sending/1btc/to/us', premiumReward())
-  app.get('/we/may/also/instruct/you/to/refuse/all/reasonably/necessary/responsibility', privacyPolicyProof())
+  app.get('/we/may/also/instruct/you/to/refuse/all/reasonably/necessary/responsibility', servePrivacyPolicyProof())
 
   /* Route for dataerasure page */
   app.use('/dataerasure', dataErasure)

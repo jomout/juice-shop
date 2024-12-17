@@ -8,7 +8,7 @@ const nftAddress = '0x41427790c94E7a592B17ad694eD9c06A02bb9C39'
 const addressesMinted = new Set()
 let isEventListenerCreated = false
 
-module.exports.nftMintListener = function nftMintListener () {
+export function nftMintListener () {
   return (req: Request, res: Response) => {
     try {
       const provider = new ethers.WebSocketProvider('wss://eth-sepolia.g.alchemy.com/v2/FZDapFZSs1l6yhHW4VnQqsi18qSd-3GJ')
@@ -28,7 +28,7 @@ module.exports.nftMintListener = function nftMintListener () {
   }
 }
 
-module.exports.walletNFTVerify = function walletNFTVerify () {
+export function walletNFTVerify () {
   return (req: Request, res: Response) => {
     try {
       const metamaskAddress = req.body.walletAddress

@@ -8,9 +8,10 @@ import chai = require('chai')
 import sinonChai = require('sinon-chai')
 const expect = chai.expect
 chai.use(sinonChai)
+import { serveKeyFiles } from '../../routes/keyServer'
 
 describe('keyServer', () => {
-  const serveKeyFiles = require('../../routes/keyServer')
+
   let req: any
   let res: any
   let next: any

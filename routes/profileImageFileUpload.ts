@@ -12,7 +12,7 @@ import * as utils from '../lib/utils'
 const security = require('../lib/insecurity')
 const fileType = require('file-type')
 
-module.exports = function fileUpload () {
+export function fileUpload () {
   return async (req: Request, res: Response, next: NextFunction) => {
     const file = req.file
     const buffer = file?.buffer

@@ -15,13 +15,13 @@ const libxml = require('libxmljs')
 const vm = require('vm')
 const unzipper = require('unzipper')
 
-function ensureFileIsPassed ({ file }: Request, res: Response, next: NextFunction) {
+export function ensureFileIsPassed ({ file }: Request, res: Response, next: NextFunction) {
   if (file != null) {
     next()
   }
 }
 
-function handleZipFileUpload ({ file }: Request, res: Response, next: NextFunction) {
+export function handleZipFileUpload ({ file }: Request, res: Response, next: NextFunction) {
   if (utils.endsWith(file?.originalname.toLowerCase(), '.zip')) {
     if (((file?.buffer) != null) && utils.isChallengeEnabled(challenges.fileWriteChallenge)) {
       const buffer = file.buffer
@@ -54,14 +54,14 @@ function handleZipFileUpload ({ file }: Request, res: Response, next: NextFuncti
   }
 }
 
-function checkUploadSize ({ file }: Request, res: Response, next: NextFunction) {
+export function checkUploadSize ({ file }: Request, res: Response, next: NextFunction) {
   if (file != null) {
     challengeUtils.solveIf(challenges.uploadSizeChallenge, () => { return file?.size > 100000 })
   }
   next()
 }
 
-function checkFileType ({ file }: Request, res: Response, next: NextFunction) {
+export function checkFileType ({ file }: Request, res: Response, next: NextFunction) {
   const fileType = file?.originalname.substr(file.originalname.lastIndexOf('.') + 1).toLowerCase()
   challengeUtils.solveIf(challenges.uploadTypeChallenge, () => {
     return !(fileType === 'pdf' || fileType === 'xml' || fileType === 'zip')
@@ -69,7 +69,7 @@ function checkFileType ({ file }: Request, res: Response, next: NextFunction) {
   next()
 }
 
-function handleXmlUpload ({ file }: Request, res: Response, next: NextFunction) {
+export function handleXmlUpload ({ file }: Request, res: Response, next: NextFunction) {
   if (utils.endsWith(file?.originalname.toLowerCase(), '.xml')) {
     challengeUtils.solveIf(challenges.deprecatedInterfaceChallenge, () => { return true })
     if (((file?.buffer) != null) && utils.isChallengeEnabled(challenges.deprecatedInterfaceChallenge)) { // XXE attacks in Docker/Heroku containers regularly cause "segfault" crashes
@@ -100,12 +100,4 @@ function handleXmlUpload ({ file }: Request, res: Response, next: NextFunction) 
     }
   }
   res.status(204).end()
-}
-
-module.exports = {
-  ensureFileIsPassed,
-  handleZipFileUpload,
-  checkUploadSize,
-  checkFileType,
-  handleXmlUpload
 }

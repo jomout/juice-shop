@@ -10,9 +10,9 @@ import logger from '../lib/logger'
 import { UserModel } from '../models/user'
 import * as utils from '../lib/utils'
 const security = require('../lib/insecurity')
-const request = require('request')
+import request from 'request'
 
-module.exports = function profileImageUrlUpload () {
+export function profileImageUrlUpload () {
   return (req: Request, res: Response, next: NextFunction) => {
     if (req.body.imageUrl !== undefined) {
       const url = req.body.imageUrl

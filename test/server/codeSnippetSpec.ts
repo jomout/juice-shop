@@ -2,7 +2,7 @@ import chai = require('chai')
 import sinonChai = require('sinon-chai')
 const expect = chai.expect
 chai.use(sinonChai)
-const { getVerdict } = require('../../routes/vulnCodeSnippet')
+import { getVerdict } from '../../routes/vulnCodeSnippet'
 
 describe('vulnCodeSnippet', () => {
   it('should assert single correctly selected vuln line as correct', () => {

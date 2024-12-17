@@ -8,9 +8,10 @@ import chai = require('chai')
 import sinonChai = require('sinon-chai')
 const expect = chai.expect
 chai.use(sinonChai)
+import { serveAngularClient } from '../../routes/angular'
 
 describe('angular', () => {
-  const serveAngularClient = require('../../routes/angular')
+
   let req: any
   let res: any
   let next: any

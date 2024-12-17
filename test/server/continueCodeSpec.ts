@@ -8,9 +8,10 @@ import chai = require('chai')
 import sinonChai = require('sinon-chai')
 const expect = chai.expect
 chai.use(sinonChai)
+import { continueCode } from '../../routes/continueCode'
 
 describe('continueCode', () => {
-  const continueCode = require('../../routes/continueCode').continueCode
+
   const challenges = require('../../data/datacache').challenges
   let req: any
   let res: any

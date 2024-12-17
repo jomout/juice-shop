@@ -8,9 +8,10 @@ import chai = require('chai')
 import sinonChai = require('sinon-chai')
 const expect = chai.expect
 chai.use(sinonChai)
+const performRedirect = require('../../routes/redirect')
 
 describe('redirect', () => {
-  const performRedirect = require('../../routes/redirect')
+  
   const challenges = require('../../data/datacache').challenges
   let req: any
   let res: any

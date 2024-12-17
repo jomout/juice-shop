@@ -5,12 +5,13 @@
 
 import chai = require('chai')
 const expect = chai.expect
+const {
+  checkUploadSize,
+  checkFileType
+} = require('../../routes/fileUpload')
 
 describe('fileUpload', () => {
-  const {
-    checkUploadSize,
-    checkFileType
-  } = require('../../routes/fileUpload')
+
   const challenges = require('../../data/datacache').challenges
   let req: any
   let save: any

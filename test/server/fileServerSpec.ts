@@ -8,9 +8,10 @@ import chai = require('chai')
 import sinonChai = require('sinon-chai')
 const expect = chai.expect
 chai.use(sinonChai)
+import { servePublicFiles } from '../../routes/fileServer'
 
 describe('fileServer', () => {
-  const servePublicFiles = require('../../routes/fileServer')
+
   const challenges = require('../../data/datacache').challenges
   let req: any
   let res: any

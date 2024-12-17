@@ -8,9 +8,10 @@ import chai = require('chai')
 import sinonChai = require('sinon-chai')
 const expect = chai.expect
 chai.use(sinonChai)
+import { serveEasterEgg } from '../../routes/easterEgg'
 
 describe('easterEgg', () => {
-  const serveEasterEgg = require('../../routes/easterEgg')
+
   const challenges = require('../../data/datacache').challenges
   let req: any
   let res: any
