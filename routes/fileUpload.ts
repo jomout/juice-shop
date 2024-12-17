@@ -25,7 +25,7 @@ export function handleZipFileUpload ({ file }: Request, res: Response, next: Nex
   if (utils.endsWith(file?.originalname.toLowerCase(), '.zip')) {
     if (((file?.buffer) != null) && utils.isChallengeEnabled(challenges.fileWriteChallenge)) {
       const buffer = file.buffer
-      const filename = file.originalname.toLowerCase()
+      const filename = path.basename(file.originalname.toLowerCase())
       const tempFile = path.join(os.tmpdir(), filename)
       fs.open(tempFile, 'w', function (err, fd) {
         if (err != null) { next(err) }
@@ -35,8 +35,9 @@ export function handleZipFileUpload ({ file }: Request, res: Response, next: Nex
             fs.createReadStream(tempFile)
               .pipe(unzipper.Parse())
               .on('entry', function (entry: any) {
-                const fileName = entry.path
-                const absolutePath = path.resolve('uploads/complaints/' + fileName)
+                const fileName = path.basename(entry.path)
+                const allowedDir = path.resolve('uploads/complaints/')
+                const absolutePath = path.resolve(allowedDir,fileName)
                 challengeUtils.solveIf(challenges.fileWriteChallenge, () => { return absolutePath === path.resolve('ftp/legal.md') })
                 if (absolutePath.includes(path.resolve('.'))) {
                   entry.pipe(fs.createWriteStream('uploads/complaints/' + fileName).on('error', function (err) { next(err) }))
@@ -77,7 +78,8 @@ export function handleXmlUpload ({ file }: Request, res: Response, next: NextFun
       try {
         const sandbox = { libxml, data }
         vm.createContext(sandbox)
-        const xmlDoc = vm.runInContext('libxml.parseXml(data, { noblanks: true, noent: true, nocdata: true })', sandbox, { timeout: 2000 })
+        const sanitizedData = data.replace(/<!ENTITY\s+[^>]+>/g,'').replace(/<!DOCTYPE[^>]*>/g, '');
+        const xmlDoc = vm.runInContext('libxml.parseXml(sanitizedData, { noblanks: true, noent: true, nocdata: true })', sandbox, { timeout: 2000 })
         const xmlString = xmlDoc.toString(false)
         challengeUtils.solveIf(challenges.xxeFileDisclosureChallenge, () => { return (utils.matchesEtcPasswdFile(xmlString) || utils.matchesSystemIniFile(xmlString)) })
         res.status(410)
