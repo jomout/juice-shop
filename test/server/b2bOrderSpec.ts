@@ -8,9 +8,10 @@ import chai = require('chai')
 import sinonChai = require('sinon-chai')
 const expect = chai.expect
 chai.use(sinonChai)
+import { b2bOrder as createB2bOrder } from '../../routes/b2bOrder'
 
 describe('b2bOrder', () => {
-  const createB2bOrder = require('../../routes/b2bOrder')
+
   const challenges = require('../../data/datacache').challenges
   let req: any
   let res: any

@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: MIT
  */
 import dataErasure from './routes/dataErasure'
-import fs = require('fs')
+import * as fs from 'fs';
 import { type Request, type Response, type NextFunction } from 'express'
 import { sequelize } from './models'
 import { UserModel } from './models/user'
@@ -61,7 +61,7 @@ const swaggerDocument = yaml.load(fs.readFileSync('./swagger.yml', 'utf8'))
 import { ensureFileIsPassed, handleZipFileUpload, checkUploadSize, checkFileType, handleXmlUpload } from './routes/fileUpload'
 import { fileUpload as profileImageFileUpload } from './routes/profileImageFileUpload'
 import { profileImageUrlUpload } from './routes/profileImageUrlUpload'
-import redirect = require('./routes/redirect')
+const redirect = require('./routes/redirect')
 import * as vulnCodeSnippet from './routes/vulnCodeSnippet'
 import * as vulnCodeFixes from './routes/vulnCodeFixes'
 import { serveAngularClient as angular } from './routes/angular'
@@ -88,14 +88,14 @@ import { retrieveBasket } from './routes/basket'
 import { placeOrder as order } from './routes/order'
 import * as verify from './routes/verify'
 import { getRecycleItem, blockRecycleItems } from './routes/recycles'
-const b2bOrder = require('./routes/b2bOrder')
-const showProductReviews = require('./routes/showProductReviews')
-const createProductReviews = require('./routes/createProductReviews')
-const checkKeys = require('./routes/checkKeys')
+import { b2bOrder } from './routes/b2bOrder'
+import { productReviews as showProductReviews } from './routes/showProductReviews'
+import { productReviews as createProductReviews } from './routes/createProductReviews'
+import * as checkKeys from './routes/checkKeys'
 import * as nftMint from './routes/nftMint'
-const web3Wallet = require('./routes/web3Wallet')
-const updateProductReviews = require('./routes/updateProductReviews')
-const likeProductReviews = require('./routes/likeProductReviews')
+import * as web3Wallet from './routes/web3Wallet'
+import { productReviews as updateProductReviews } from './routes/updateProductReviews'
+import { productReviews as likeProductReviews } from './routes/likeProductReviews'
 const security = require('./lib/insecurity')
 const app = express()
 const server = require('http').Server(app)
@@ -112,7 +112,7 @@ import * as twoFactorAuth from './routes/2fa'
 import { getLanguageList } from './routes/languages'
 import { imageCaptchas } from './routes/imageCaptcha'
 import { dataExport } from './routes/dataExport'
-const address = require('./routes/address')
+import * as address from './routes/address'
 import * as payment from './routes/payment'
 import * as wallet from './routes/wallet'
 import * as orderHistory from './routes/orderHistory'

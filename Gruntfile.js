@@ -4,6 +4,7 @@
  */
 
 'use strict'
+import * as fs from 'fs';
 
 module.exports = function (grunt) {
   const os = grunt.option('os') || process.env.PCKG_OS_NAME || ''
@@ -70,7 +71,7 @@ module.exports = function (grunt) {
   })
 
   grunt.registerTask('checksum', 'Create .md5 checksum files', function () {
-    const fs = require('fs')
+
     const crypto = require('crypto')
     fs.readdirSync('dist/').forEach(file => {
       const buffer = fs.readFileSync('dist/' + file)
