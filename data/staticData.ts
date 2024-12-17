@@ -6,9 +6,6 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export async function loadStaticData (file: string) {
-  if (file.includes('..')){
-    throw new Error('Path contains invalid traversal characters!')
-  }
   const sanitizedFile = path.basename(file);
   const allowedDir = path.resolve('./data/static/');
   const filePath = path.resolve( allowedDir, sanitizedFile + '.yml');
