@@ -7,8 +7,8 @@ dotenv.config();
 
 export async function loadStaticData (file: string) {
   const sanitizedFile = path.basename(file);
-  const filePath = path.resolve('./data/static/' + sanitizedFile + '.yml');
-  const allowedDir = path.resolve('./data/static');
+  const allowedDir = path.resolve('./data/static/');
+  const filePath = path.resolve( allowedDir, sanitizedFile + '.yml');
   if (!filePath.startsWith(allowedDir)) {
     logger.error(`Invalid file path attempt: "${filePath}"`);
     return;
