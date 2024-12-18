@@ -6,7 +6,7 @@
 import { type Request, type Response, type NextFunction } from 'express'
 import { type Challenge, type Product } from '../data/types'
 import type { Product as ProductConfig } from '../lib/config.types'
-import { type JwtPayload, type VerifyErrors } from 'jsonwebtoken'
+import { type VerifyErrors } from 'jsonwebtoken'
 import { FeedbackModel } from '../models/feedback'
 import { ComplaintModel } from '../models/complaint'
 import { Op } from 'sequelize'
