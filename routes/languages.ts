@@ -4,14 +4,14 @@
  */
 
 import locales from '../data/static/locales.json'
-import fs = require('fs')
+import * as fs from 'fs';
 import { type Request, type Response, type NextFunction } from 'express'
 
 export function getLanguageList () { // TODO Refactor and extend to also load backend translations from /i18n/*json and calculate joint percentage/gauge
   return (req: Request, res: Response, next: NextFunction) => {
-    const languages: Array<{ key: string, lang: any, icons: string[], shortKey: string, percentage: unknown, gauge: string }> = []
+    const languages: Array<{ key: string, lang: string, icons: string[], shortKey: string, percentage: unknown, gauge: string }> = []
     let count = 0
-    let enContent: any
+    let enContent: Record<string, string>;
 
     fs.readFile('frontend/dist/frontend/assets/i18n/en.json', 'utf-8', (err, content) => {
       if (err != null) {
@@ -32,11 +32,11 @@ export function getLanguageList () { // TODO Refactor and extend to also load ba
             const percentage = await calcPercentage(fileContent, enContent)
             const key = fileName.substring(0, fileName.indexOf('.'))
             const locale = locales.find((l) => l.key === key)
-            const lang: any = {
+            const lang = {
               key,
               lang: fileContent.LANGUAGE,
-              icons: locale?.icons,
-              shortKey: locale?.shortKey,
+              icons: locale?.icons || [],
+              shortKey: locale?.shortKey || key.toUpperCase(),
               percentage,
               gauge: (percentage > 90 ? 'full' : (percentage > 70 ? 'three-quarters' : (percentage > 50 ? 'half' : (percentage > 30 ? 'quarter' : 'empty'))))
             }
@@ -54,7 +54,7 @@ export function getLanguageList () { // TODO Refactor and extend to also load ba
       })
     })
 
-    async function calcPercentage (fileContent: any, enContent: any): Promise<number> {
+    async function calcPercentage (fileContent: Record<string, string>, enContent: Record<string, string>): Promise<number> {
       const totalStrings = Object.keys(enContent).length
       let differentStrings = 0
       return await new Promise((resolve, reject) => {
