@@ -25,7 +25,7 @@ class MockSocket {
     callback()
   }
 
-  emit (a: any, b: any) {
+  emit () {
     return null
   }
 }
