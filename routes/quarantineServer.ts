@@ -7,7 +7,7 @@ import path from 'path'
 import { type Request, type Response, type NextFunction } from 'express'
 
 export function serveQuarantineFiles () {
-  return ({ params, query }: Request, res: Response, next: NextFunction) => {
+  return ({ params }: Request, res: Response, next: NextFunction) => {
     const file = params.file
 
     if (!file.includes('/')) {

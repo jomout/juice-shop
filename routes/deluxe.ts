@@ -15,7 +15,7 @@ const security = require('../lib/insecurity')
 
 // Named Export: upgradeToDeluxe
 export const upgradeToDeluxe = () => {
-  return async (req: Request, res: Response, _: NextFunction) => {
+  return async (req: Request, res: Response) => {
     try {
       const user = await UserModel.findOne({ where: { id: req.body.UserId, role: security.roles.customer } })
       if (user == null) {
@@ -61,7 +61,7 @@ export const upgradeToDeluxe = () => {
 
 // Named Export: deluxeMembershipStatus
 export const deluxeMembershipStatus = () => {
-  return (req: Request, res: Response, _: NextFunction) => {
+  return (req: Request, res: Response) => {
     if (security.isCustomer(req)) {
       res.status(200).json({ status: 'success', data: { membershipCost: 49 } })
     } else if (security.isDeluxe(req)) {
