@@ -12,7 +12,7 @@ import { challenges } from '../data/datacache'
 const security = require('../lib/insecurity')
 
 export function productReviews () {
-  return (req: Request, res: Response, next: NextFunction) => {
+  return (req: Request, res: Response) => {
     const id = req.body.id
     const user = security.authenticatedUsers.from(req)
     db.reviewsCollection.findOne({ _id: id }).then((review: Review) => {
@@ -42,7 +42,7 @@ export function productReviews () {
                     { _id: id },
                     { $set: { likedBy } }
                   ).then(
-                    (result: any) => {
+                    (result: unknown) => {
                       res.json(result)
                     }, (err: unknown) => {
                       res.status(500).json(err)

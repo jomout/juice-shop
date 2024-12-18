@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import { type NextFunction, type Request, type Response } from 'express'
+import { type Request, type Response } from 'express'
 import fs from 'fs'
 import yaml from 'js-yaml'
 import { getCodeChallenges } from '../lib/codingChallenges'
