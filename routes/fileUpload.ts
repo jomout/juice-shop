@@ -4,16 +4,18 @@
  */
 
 import os from 'os'
-import fs = require('fs')
+import * as fs from 'fs';
 import challengeUtils = require('../lib/challengeUtils')
 import { type NextFunction, type Request, type Response } from 'express'
 import path from 'path'
 import * as utils from '../lib/utils'
 import { challenges } from '../data/datacache'
+import unzipper from 'unzipper';
+import onFinished = require('on-finished')
 
 const libxml = require('libxmljs')
 const vm = require('vm')
-const unzipper = require('unzipper')
+// const unzipper = require('unzipper')
 
 export function ensureFileIsPassed ({ file }: Request, res: Response, next: NextFunction) {
   if (file != null) {
@@ -34,7 +36,7 @@ export function handleZipFileUpload ({ file }: Request, res: Response, next: Nex
           fs.close(fd, function () {
             fs.createReadStream(tempFile)
               .pipe(unzipper.Parse())
-              .on('entry', function (entry: any) {
+              .on('entry', function (entry: unzipper.Entry) {
                 const fileName = path.basename(entry.path)
                 const allowedDir = path.resolve('uploads/complaints/')
                 const absolutePath = path.resolve(allowedDir,fileName)
@@ -84,14 +86,14 @@ export function handleXmlUpload ({ file }: Request, res: Response, next: NextFun
         challengeUtils.solveIf(challenges.xxeFileDisclosureChallenge, () => { return (utils.matchesEtcPasswdFile(xmlString) || utils.matchesSystemIniFile(xmlString)) })
         res.status(410)
         next(new Error('B2B customer complaints via file upload have been deprecated for security reasons: ' + utils.trunc(xmlString, 400) + ' (' + file.originalname + ')'))
-      } catch (err: any) { // TODO: Remove any
-        if (utils.contains(err.message, 'Script execution timed out')) {
+      } catch (err: unknown) { // TODO: Remove any
+        if (err instanceof Error && utils.contains(err.message, 'Script execution timed out')) {
           if (challengeUtils.notSolved(challenges.xxeDosChallenge)) {
             challengeUtils.solve(challenges.xxeDosChallenge)
           }
           res.status(503)
           next(new Error('Sorry, we are temporarily not available! Please try again later.'))
-        } else {
+        } else if (err instanceof Error) {
           res.status(410)
           next(new Error('B2B customer complaints via file upload have been deprecated for security reasons: ' + err.message + ' (' + file.originalname + ')'))
         }
