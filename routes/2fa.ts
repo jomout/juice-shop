@@ -12,9 +12,10 @@ import * as utils from '../lib/utils'
 import { challenges } from '../data/datacache'
 
 const security = require('../lib/insecurity')
-import otplib from 'otplib'
+const otplib = require('otplib')
 
 otplib.authenticator.options = {
+  step:30,
   // Accepts tokens as valid even when they are 30sec to old or to new
   // This is a standard as the clocks of the authenticator and server might not align perfectly.
   window: 1

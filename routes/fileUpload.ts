@@ -11,7 +11,6 @@ import path from 'path'
 import * as utils from '../lib/utils'
 import { challenges } from '../data/datacache'
 import unzipper from 'unzipper';
-import onFinished = require('on-finished')
 
 const libxml = require('libxmljs')
 const vm = require('vm')
