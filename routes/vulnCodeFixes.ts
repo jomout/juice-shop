@@ -52,7 +52,7 @@ interface VerdictRequestBody {
   selectedFix: number
 }
 
-export const serveCodeFixes = () => (req: Request<FixesRequestParams, Record<string, unknown>, Record<string, unknown>>, res: Response, _: NextFunction) => {
+export const serveCodeFixes = () => (req: Request<FixesRequestParams, Record<string, unknown>, Record<string, unknown>>, res: Response) => {
   const key = req.params.key
   const fixData = readFixes(key)
   if (fixData.fixes.length === 0) {
@@ -66,7 +66,7 @@ export const serveCodeFixes = () => (req: Request<FixesRequestParams, Record<str
   })
 }
 
-export const checkCorrectFix = () => async (req: Request<Record<string, unknown>, Record<string, unknown>, VerdictRequestBody>, res: Response, _: NextFunction) => {
+export const checkCorrectFix = () => async (req: Request<Record<string, unknown>, Record<string, unknown>, VerdictRequestBody>, res: Response) => {
   const key = req.body.key
   const selectedFix = req.body.selectedFix
   const fixData = readFixes(key)
