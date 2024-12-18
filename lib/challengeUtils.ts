@@ -11,7 +11,6 @@ import * as accuracy from './accuracy'
 import { type Server } from 'socket.io'
 import { AllHtmlEntities as Entities } from 'html-entities'
 import { challenges, notifications } from '../data/datacache'
-import { type Challenge } from '../data/types'
 
 const entities = new Entities()
 
@@ -19,13 +18,13 @@ const globalWithSocketIO = global as typeof globalThis & {
   io: SocketIOClientStatic & Server
 }
 
-export const solveIf = function (challenge: Challenge, criteria: () => boolean, isRestore: boolean = false) {
+export const solveIf = function (challenge: any, criteria: () => any, isRestore: boolean = false) {
   if (notSolved(challenge) && criteria()) {
     solve(challenge, isRestore)
   }
 }
 
-export const solve = function (challenge: Challenge, isRestore = false) {
+export const solve = function (challenge: any, isRestore = false) {
   challenge.solved = true
   challenge.save().then((solvedChallenge: { difficulty: number, key: string, name: string }) => {
     logger.info(`${isRestore ? colors.grey('Restored') : colors.green('Solved')} ${solvedChallenge.difficulty}-star ${colors.cyan(solvedChallenge.key)} (${solvedChallenge.name})`)
@@ -41,13 +40,13 @@ export const solve = function (challenge: Challenge, isRestore = false) {
   })
 }
 
-export const sendNotification = function (challenge: { difficulty?: number, key: string, name: string, description?: string }, isRestore: boolean) {
+export const sendNotification = function (challenge: { difficulty?: number, key: any, name: any, description?: any }, isRestore: boolean) {
   if (!notSolved(challenge)) {
     const flag = utils.ctfFlag(challenge.name)
     const notification = {
       key: challenge.key,
       name: challenge.name,
-      challenge: challenge.name + ' (' + entities.decode(sanitizeHtml(challenge.description?? '', { allowedTags: [], allowedAttributes: {} })) + ')',
+      challenge: challenge.name + ' (' + entities.decode(sanitizeHtml(challenge.description, { allowedTags: [], allowedAttributes: {} })) + ')',
       flag,
       hidden: !config.get('challenges.showSolvedNotifications'),
       isRestore

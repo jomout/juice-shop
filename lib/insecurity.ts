@@ -42,7 +42,7 @@ interface IAuthenticatedUsers {
   get: (token: string) => ResponseWithUser | undefined
   tokenOf: (user: UserModel) => string | undefined
   from: (req: Request) => ResponseWithUser | undefined
-  updateFrom: (req: Request, user: ResponseWithUser) => void
+  updateFrom: (req: Request, user: ResponseWithUser) => any
 }
 
 export const hash = (data: string) => crypto.createHash('md5').update(data).digest('hex')
@@ -62,8 +62,8 @@ export const cutOffPoisonNullByte = (str: string) => {
   return str
 }
 
-export const isAuthorized = () => expressJwt(({ secret: publicKey,algorithms:[] }))
-export const denyAll = () => expressJwt({ secret: '' + Math.random() ,algorithms:[] })
+export const isAuthorized = () => expressJwt(({ secret: publicKey }) as any)
+export const denyAll = () => expressJwt({ secret: '' + Math.random() } as any)
 export const authorize = (user = {}) => jwt.sign(user, privateKey, { expiresIn: '6h', algorithm: 'RS256' })
 export const verify = (token: string) => token ? (jws.verify as ((token: string, secret: string) => boolean))(token, publicKey) : false
 export const decode = (token: string) => { return jws.decode(token)?.payload }
@@ -103,13 +103,9 @@ export const authenticatedUsers: IAuthenticatedUsers = {
   }
 }
 
-interface Headers {
-  [key: string]: string | undefined;
+export const userEmailFrom = ({ headers }: any) => {
+  return headers ? headers['x-user-email'] : undefined
 }
-
-export const userEmailFrom = ({ headers }: { headers?: Headers }) => {
-  return headers ? headers['x-user-email'] : undefined;
-};
 
 export const generateCoupon = (discount: number, date = new Date()) => {
   const coupon = utils.toMMMYY(date) + '-' + discount
@@ -194,7 +190,7 @@ export const appendUserId = () => {
     try {
       req.body.UserId = authenticatedUsers.tokenMap[utils.jwtFrom(req)].data.id
       next()
-    } catch (error) {
+    } catch (error: any) {
       res.status(401).json({ status: 'error', message: error })
     }
   }
