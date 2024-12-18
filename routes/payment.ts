@@ -37,7 +37,7 @@ export function getPaymentMethods () {
 }
 
 export function getPaymentMethodById () {
-  return async (req: Request, res: Response, _: NextFunction) => {
+  return async (req: Request, res: Response) => {
     const card = await CardModel.findOne({ where: { id: req.params.id, UserId: req.body.UserId } })
     const displayableCard: displayCard = {
       UserId: 0,
@@ -66,7 +66,7 @@ export function getPaymentMethodById () {
 }
 
 export function delPaymentMethodById () {
-  return async (req: Request, res: Response, _: NextFunction) => {
+  return async (req: Request, res: Response) => {
     const card = await CardModel.destroy({ where: { id: req.params.id, UserId: req.body.UserId } })
     if (card) {
       res.status(200).json({ status: 'success', data: 'Card deleted successfully.' })

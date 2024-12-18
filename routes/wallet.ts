@@ -8,7 +8,7 @@ import { WalletModel } from '../models/wallet'
 import { CardModel } from '../models/card'
 
 export function getWalletBalance () {
-  return async (req: Request, res: Response, _: NextFunction) => {
+  return async (req: Request, res: Response) => {
     const wallet = await WalletModel.findOne({ where: { UserId: req.body.UserId } })
     if (wallet != null) {
       res.status(200).json({ status: 'success', data: wallet.balance })
@@ -19,7 +19,7 @@ export function getWalletBalance () {
 }
 
 export function addWalletBalance () {
-  return async (req: Request, res: Response, _: NextFunction) => {
+  return async (req: Request, res: Response) => {
     const cardId = req.body.paymentId
     const card = cardId ? await CardModel.findOne({ where: { id: cardId, UserId: req.body.UserId } }) : null
     if (card != null) {
